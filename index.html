@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แบบประเมินความพึงพอใจ - วันที่ 27 พ.ย. 68</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Sarabun', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            opacity: 0.95;
+        }
+        
+        .day-badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 20px;
+            border-radius: 20px;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+        
+        .content {
+            padding: 40px 30px;
+        }
+        
+        .instructions {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            margin-bottom: 30px;
+            border-radius: 5px;
+        }
+        
+        .instructions h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+        
+        .instructions ol {
+            margin-left: 20px;
+        }
+        
+        .instructions li {
+            margin-bottom: 8px;
+        }
+        
+        .section-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #333;
+            margin: 30px 0 20px 0;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+        
+        .form-group {
+            margin-bottom: 25px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .required {
+            color: #e74c3c;
+        }
+        
+        .form-group input[type="text"],
+        .form-group input[type="email"],
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-family: 'Sarabun', sans-serif;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+        
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+        
+        .example-text {
+            font-size: 14px;
+            color: #666;
+            font-style: italic;
+            margin-top: 5px;
+        }
+        
+        /* Table Styles */
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        table th {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 15px 10px;
+            text-align: left;
+            font-weight: 600;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+        
+        table td {
+            padding: 15px 10px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        table tr:hover {
+            background: #f8f9fa;
+        }
+        
+        .question-cell {
+            min-width: 300px;
+            font-weight: 500;
+        }
+        
+        .radio-group {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .radio-item {
+            position: relative;
+        }
+        
+        .radio-item input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+        
+        .radio-item label {
+            display: block;
+            padding: 8px 15px;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        
+        .radio-item input[type="radio"]:checked + label {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .radio-item label:hover {
+            border-color: #667eea;
+        }
+        
+        /* Score Rating (1-10) */
+        .score-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        .score-item {
+            position: relative;
+        }
+        
+        .score-item input[type="radio"] {
+            position: absolute;
+            opacity: 0;
+        }
+        
+        .score-item label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 45px;
+            height: 45px;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+        }
+        
+        .score-item input[type="radio"]:checked + label {
+            background: #667eea;
+            color: white;
+            border-color: #667eea;
+            transform: scale(1.1);
+        }
+        
+        .score-item label:hover {
+            border-color: #667eea;
+        }
+        
+        .score-legend {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            font-size: 14px;
+            color: #666;
+        }
+        
+        .submit-section {
+            margin-top: 40px;
+            text-align: center;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 10px;
+        }
+        
+        .btn-submit {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 50px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Sarabun', sans-serif;
+        }
+        
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+        
+        .btn-submit:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .loading {
+            display: none;
+            margin-top: 20px;
+        }
+        
+        .loading.active {
+            display: block;
+        }
+        
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .footer {
+            background: #2c3e50;
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        
+        .footer p {
+            margin: 5px 0;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 22px;
+            }
+            
+            .content {
+                padding: 20px 15px;
+            }
+            
+            .radio-group,
+            .score-group {
+                gap: 8px;
+            }
+            
+            .radio-item label {
+                padding: 6px 12px;
+                font-size: 13px;
+            }
+            
+            .score-item label {
+                width: 38px;
+                height: 38px;
+                font-size: 14px;
+            }
+            
+            table th,
+            table td {
+                padding: 10px 5px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>แบบประเมินความพึงพอใจ</h1>
+            <p>โครงการประชุมวิชาการนวัตกรรมการพัฒนาคุณภาพการดูแลผู้สูงอายุในยุคดิจิทัล</p>
+            <p>Innovation for Quality Development of The Elderly Care in Digital Age</p>
+            <div class="day-badge">📅 วันที่ 27 พฤศจิกายน 2568</div>
+            <p style="margin-top: 10px;">ณ ห้องประชุมแคทลียา วิทยาลัยพยาบาลบรมราชชนนี กรุงเทพ</p>
+        </div>
+
+        <!-- Content -->
+        <div class="content">
+            <!-- Instructions -->
+            <div class="instructions">
+                <h3>📋 คำชี้แจง</h3>
+                <ol>
+                    <li>แบบสอบถามฉบับนี้จัดทำขึ้นเพื่อใช้ในการสำรวจความพึงพอใจของผู้รับบริการที่มีต่อคุณภาพของกิจกรรม/ผลงาน/บริการที่ได้รับจากการประชุมครั้งนี้ ทั้งนี้คำตอบของท่านจะถูกนำเสนอเป็นภาพรวม และจะเก็บเป็นความลับอย่างดีที่สุด</li>
+                    <li>แบบสอบถามฉบับนี้ประกอบด้วยเนื้อหา 2 ส่วน ได้แก่<br>
+                        - ส่วนที่ 1 ข้อมูลส่วนบุคคลของผู้ตอบแบบสอบถาม<br>
+                        - ส่วนที่ 2 ความพึงพอใจต่อคุณภาพของบริการวิชาการที่ได้รับ
+                    </li>
+                    <li>กรุณาทำเครื่องหมาย ✓ ในช่องที่ตรงกับความเป็นจริงและตรงกับความคิดเห็นของท่านมากที่สุด</li>
+                </ol>
+            </div>
+
+            <!-- Form -->
+            <form id="surveyForm">
+                <input type="hidden" name="day" value="day2">
+                
+                <!-- Section 1: Personal Information -->
+                <div class="section-title">📝 ส่วนที่ 1: ข้อมูลส่วนบุคคลของผู้ตอบแบบสอบถาม</div>
+
+                <div class="form-group">
+                    <label>1. ชื่อ-นามสกุล <span class="required">*</span></label>
+                    <select name="fullname" id="fullname" required>
+                        <option value="">-- กำลังโหลดรายชื่อ... --</option>
+                    </select>
+                    <div class="example-text">โดยใช้ยืนยันในการแสดงใบประกาศนียบัตร ให้เลือกชื่อที่ถูกต้อง</div>
+                </div>
+
+                <div class="form-group">
+                    <label>2. E-mail <span class="required">*</span></label>
+                    <input type="email" name="email" required placeholder="example@mail.com">
+                </div>
+
+                <div class="form-group">
+                    <label>3. เพศ <span class="required">*</span></label>
+                    <select name="gender" required>
+                        <option value="">-- เลือกเพศ --</option>
+                        <option value="ชาย">ชาย</option>
+                        <option value="หญิง">หญิง</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>4. อายุ <span class="required">*</span></label>
+                    <select name="age" required>
+                        <option value="">-- เลือกช่วงอายุ --</option>
+                        <option value="ต่ำกว่า 30 ปี">ต่ำกว่า 30 ปี</option>
+                        <option value="31 - 40 ปี">31 - 40 ปี</option>
+                        <option value="41 - 50 ปี">41 - 50 ปี</option>
+                        <option value="51 - 60 ปี">51 - 60 ปี</option>
+                        <option value="60 ปีขึ้นไป">60 ปีขึ้นไป</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>5. ระดับการศึกษา <span class="required">*</span></label>
+                    <select name="education" required>
+                        <option value="">-- เลือกระดับการศึกษา --</option>
+                        <option value="ปริญญาตรี">ปริญญาตรี</option>
+                        <option value="ปริญญาโท">ปริญญาโท</option>
+                        <option value="ปริญญาเอก">ปริญญาเอก</option>
+                        <option value="อื่นๆ">อื่นๆ</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>6. สถานที่ปฏิบัติงาน <span class="required">*</span></label>
+                    <input type="text" name="workplace" required placeholder="เช่น รพ.ราชบุรี, รพ.บำรุงราษฏร์">
+                    <div class="example-text">ตัวอย่าง: รพ.ราชบุรี, รพ.บำรุงราษฏร์, รพ.สต...., คณะพยาบาลศาสตร์ ม.ธรรมศาสตร์</div>
+                </div>
+
+                <div class="form-group">
+                    <label>7. จังหวัด <span class="required">*</span></label>
+                    <select name="province" required>
+                        <option value="">-- เลือกจังหวัด --</option>
+                        <option value="กรุงเทพมหานคร">กรุงเทพมหานคร</option>
+                        <option value="กระบี่">กระบี่</option>
+                        <option value="กาญจนบุรี">กาญจนบุรี</option>
+                        <option value="กาฬสินธุ์">กาฬสินธุ์</option>
+                        <option value="กำแพงเพชร">กำแพงเพชร</option>
+                        <option value="ขอนแก่น">ขอนแก่น</option>
+                        <option value="จันทบุรี">จันทบุรี</option>
+                        <option value="ฉะเชิงเทรา">ฉะเชิงเทรา</option>
+                        <option value="ชลบุรี">ชลบุรี</option>
+                        <option value="ชัยนาท">ชัยนาท</option>
+                        <option value="ชัยภูมิ">ชัยภูมิ</option>
+                        <option value="ชุมพร">ชุมพร</option>
+                        <option value="เชียงราย">เชียงราย</option>
+                        <option value="เชียงใหม่">เชียงใหม่</option>
+                        <option value="ตรัง">ตรัง</option>
+                        <option value="ตราด">ตราด</option>
+                        <option value="ตาก">ตาก</option>
+                        <option value="นครนายก">นครนายก</option>
+                        <option value="นครปฐม">นครปฐม</option>
+                        <option value="นครพนม">นครพนม</option>
+                        <option value="นครราชสีมา">นครราชสีมา</option>
+                        <option value="นครศรีธรรมราช">นครศรีธรรมราช</option>
+                        <option value="นครสวรรค์">นครสวรรค์</option>
+                        <option value="นนทบุรี">นนทบุรี</option>
+                        <option value="นราธิวาส">นราธิวาส</option>
+                        <option value="น่าน">น่าน</option>
+                        <option value="บึงกาฬ">บึงกาฬ</option>
+                        <option value="บุรีรัมย์">บุรีรัมย์</option>
+                        <option value="ปทุมธานี">ปทุมธานี</option>
+                        <option value="ประจวบคีรีขันธ์">ประจวบคีรีขันธ์</option>
+                        <option value="ปราจีนบุรี">ปราจีนบุรี</option>
+                        <option value="ปัตตานี">ปัตตานี</option>
+                        <option value="พระนครศรีอยุธยา">พระนครศรีอยุธยา</option>
+                        <option value="พะเยา">พะเยา</option>
+                        <option value="พังงา">พังงา</option>
+                        <option value="พัทลุง">พัทลุง</option>
+                        <option value="พิจิตร">พิจิตร</option>
+                        <option value="พิษณุโลก">พิษณุโลก</option>
+                        <option value="เพชรบุรี">เพชรบุรี</option>
+                        <option value="เพชรบูรณ์">เพชรบูรณ์</option>
+                        <option value="แพร่">แพร่</option>
+                        <option value="พัทยา">พัทยา</option>
+                        <option value="ภูเก็ต">ภูเก็ต</option>
+                        <option value="มหาสารคาม">มหาสารคาม</option>
+                        <option value="มุกดาหาร">มุกดาหาร</option>
+                        <option value="แม่ฮ่องสอน">แม่ฮ่องสอน</option>
+                        <option value="ยะลา">ยะลา</option>
+                        <option value="ยโสธร">ยโสธร</option>
+                        <option value="ร้อยเอ็ด">ร้อยเอ็ด</option>
+                        <option value="ระนอง">ระนอง</option>
+                        <option value="ระยอง">ระยอง</option>
+                        <option value="ราชบุรี">ราชบุรี</option>
+                        <option value="ลพบุรี">ลพบุรี</option>
+                        <option value="ลำปาง">ลำปาง</option>
+                        <option value="ลำพูน">ลำพูน</option>
+                        <option value="เลย">เลย</option>
+                        <option value="ศรีสะเกษ">ศรีสะเกษ</option>
+                        <option value="สกลนคร">สกลนคร</option>
+                        <option value="สงขลา">สงขลา</option>
+                        <option value="สตูล">สตูล</option>
+                        <option value="สมุทรปราการ">สมุทรปราการ</option>
+                        <option value="สมุทรสงคราม">สมุทรสงคราม</option>
+                        <option value="สมุทรสาคร">สมุทรสาคร</option>
+                        <option value="สระแก้ว">สระแก้ว</option>
+                        <option value="สระบุรี">สระบุรี</option>
+                        <option value="สิงห์บุรี">สิงห์บุรี</option>
+                        <option value="สุโขทัย">สุโขทัย</option>
+                        <option value="สุพรรณบุรี">สุพรรณบุรี</option>
+                        <option value="สุราษฎร์ธานี">สุราษฎร์ธานี</option>
+                        <option value="สุรินทร์">สุรินทร์</option>
+                        <option value="หนองคาย">หนองคาย</option>
+                        <option value="หนองบัวลำภู">หนองบัวลำภู</option>
+                        <option value="อ่างทอง">อ่างทอง</option>
+                        <option value="อำนาจเจริญ">อำนาจเจริญ</option>
+                        <option value="อุดรธานี">อุดรธานี</option>
+                        <option value="อุตรดิตถ์">อุตรดิตถ์</option>
+                        <option value="อุทัยธานี">อุทัยธานี</option>
+                        <option value="อุบลราชธานี">อุบลราชธานี</option>
+                    </select>
+                </div>
+
+                <!-- Section 2: Satisfaction Survey -->
+                <div class="section-title">⭐ ส่วนที่ 2: ความพึงพอใจต่อคุณภาพของการจัดประชุม</div>
+                <p style="margin-bottom: 20px; color: #666;">ท่านพึงพอใจต่อคุณภาพของการจัดประชุม ในเรื่องต่อไปนี้น้อยไปมากเพียงใด</p>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="min-width: 350px;">รายการประเมิน</th>
+                                <th style="text-align: center; min-width: 400px;">ระดับความพึงพอใจ</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Category 1: Process -->
+                            <tr>
+                                <td colspan="2" style="background: #f8f9fa; font-weight: 700;">1. ด้านกระบวนการ/ขั้นตอนการให้บริการ</td>
+                            </tr>
+                            <tr>
+                                <td class="question-cell">1.1 การให้บริการเป็นระบบและมีขั้นตอนที่เหมาะสม <span class="required">*</span></td>
+                                <td>
+                                    <div class="radio-group">
+                                        <div class="radio-item"><input type="radio" name="q1_1" id="q1_1_1" value="1" required><label for="q1_1_1">น้อยที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q1_1" id="q1_1_2" value="2"><label for="q1_1_2">น้อย</label></div>
+                                        <div class="radio-item"><input type="radio" name="q1_1" id="q1_1_3" value="3"><label for="q1_1_3">มาก</label></div>
+                                        <div class="radio-item"><input type="radio" name="q1_1" id="q1_1_4" value="4"><label for="q1_1_4">มากที่สุด</label></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="question-cell">1.2 ขั้นตอนการลงทะเบียน <span class="required">*</span></td>
+                                <td>
+                                    <div class="radio-group">
+                                        <div class="radio-item"><input type="radio" name="q1_2" id="q1_2_1" value="1" required><label for="q1_2_1">น้อยที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q1_2" id="q1_2_2" value="2"><label for="q1_2_2">น้อย</label></div>
+                                        <div class="radio-item"><input type="radio" name="q1_2" id="q1_2_3" value="3"><label for="q1_2_3">มาก</label></div>
+                                        <div class="radio-item"><input type="radio" name="q1_2" id="q1_2_4" value="4"><label for="q1_2_4">มากที่สุด</label></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="question-cell">1.3 การตอบรับและวิธีการเข้าร่วมประชุม <span class="required">*</span></td>
+                                <td>
+                                    <div class="radio-group">
+                                        <div class="radio-item"><input type="radio" name="q1_3" id="q1_3_1" value="1" required><label for="q1_3_1">น้อยที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q1_3" id="q1_3_2" value="2"><label for="q1_3_2">น้อย</label></div>
+                                        <div class="radio-item"><input type="radio" name="q1_3" id="q1_3_3" value="3"><label for="q1_3_3">มาก</label></div>
+                                        <div class="radio-item"><input type="radio" name="q1_3" id="q1_3_4" value="4"><label for="q1_3_4">มากที่สุด</label></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="question-cell">1.4 การประชาสัมพันธ์และให้ข้อมูลที่ชัดเจนและเข้าใจง่าย <span class="required">*</span></td>
+                                <td>
+                                    <div class="radio-group">
+                                        <div class="radio-item"><input type="radio" name="q1_4" id="q1_4_1" value="1" required><label for="q1_4_1">น้อยที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q1_4" id="q1_4_2" value="2"><label for="q1_4_2">น้อย</label></div>
+                                        <div class="radio-item"><input type="radio" name="q1_4" id="q1_4_3" value="3"><label for="q1_4_3">มาก</label></div>
+                                        <div class="radio-item"><input type="radio" name="q1_4" id="q1_4_4" value="4"><label for="q1_4_4">มากที่สุด</label></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="question-cell">1.5 ระยะเวลาในการประชุมมีความเหมาะสม <span class="required">*</span></td>
+                                <td>
+                                    <div class="radio-group">
+                                        <div class="radio-item"><input type="radio" name="q1_5" id="q1_5_1" value="1" required><label for="q1_5_1">น้อยที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q1_5" id="q1_5_2" value="2"><label for="q1_5_2">น้อย</label></div>
+                                        <div class="radio-item"><input type="radio" name="q1_5" id="q1_5_3" value="3"><label for="q1_5_3">มาก</label></div>
+                                        <div class="radio-item"><input type="radio" name="q1_5" id="q1_5_4" value="4"><label for="q1_5_4">มากที่สุด</label></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="question-cell">1.6 เอกสารประกอบการประชุมเข้าถึงได้ง่าย <span class="required">*</span></td>
+                                <td>
+                                    <div class="radio-group">
+                                        <div class="radio-item"><input type="radio" name="q1_6" id="q1_6_1" value="1" required><label for="q1_6_1">น้อยที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q1_6" id="q1_6_2" value="2"><label for="q1_6_2">น้อย</label></div>
+                                        <div class="radio-item"><input type="radio" name="q1_6" id="q1_6_3" value="3"><label for="q1_6_3">มาก</label></div>
+                                        <div class="radio-item"><input type="radio" name="q1_6" id="q1_6_4" value="4"><label for="q1_6_4">มากที่สุด</label></div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Category 2: Staff -->
+                            <tr>
+                                <td colspan="2" style="background: #f8f9fa; font-weight: 700;">2. ด้านเจ้าหน้าที่/บุคลากรที่ให้บริการ</td>
+                            </tr>
+                            <tr>
+                                <td class="question-cell">2.1 เจ้าหน้าที่ให้บริการด้วยความสุภาพ เป็นมิตร <span class="required">*</span></td>
+                                <td>
+                                    <div class="radio-group">
+                                        <div class="radio-item"><input type="radio" name="q2_1" id="q2_1_1" value="1" required><label for="q2_1_1">น้อยที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q2_1" id="q2_1_2" value="2"><label for="q2_1_2">น้อย</label></div>
+                                        <div class="radio-item"><input type="radio" name="q2_1" id="q2_1_3" value="3"><label for="q2_1_3">มาก</label></div>
+                                        <div class="radio-item"><input type="radio" name="q2_1" id="q2_1_4" value="4"><label for="q2_1_4">มากที่สุด</label></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="question-cell">2.2 เจ้าหน้าที่ให้คำแนะนำ หรือตอบข้อซักถามและการให้ข้อมูลต่างๆได้อย่างถูกต้อง ครบถ้วน น่าเชื่อถือ <span class="required">*</span></td>
+                                <td>
+                                    <div class="radio-group">
+                                        <div class="radio-item"><input type="radio" name="q2_2" id="q2_2_1" value="1" required><label for="q2_2_1">น้อยที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q2_2" id="q2_2_2" value="2"><label for="q2_2_2">น้อย</label></div>
+                                        <div class="radio-item"><input type="radio" name="q2_2" id="q2_2_3" value="3"><label for="q2_2_3">มาก</label></div>
+                                        <div class="radio-item"><input type="radio" name="q2_2" id="q2_2_4" value="4"><label for="q2_2_4">มากที่สุด</label></div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Category 3: Facilities -->
+                            <tr>
+                                <td colspan="2" style="background: #f8f9fa; font-weight: 700;">3. ด้านสิ่งอำนวยความสะดวก</td>
+                            </tr>
+                            <tr>
+                                <td class="question-cell">3.1 ความหลากหลายของช่องทางในการติดต่อเพื่อเข้าร่วมประชุม <span class="required">*</span></td>
+                                <td>
+                                    <div class="radio-group">
+                                        <div class="radio-item"><input type="radio" name="q3_1" id="q3_1_1" value="1" required><label for="q3_1_1">น้อยที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q3_1" id="q3_1_2" value="2"><label for="q3_1_2">น้อย</label></div>
+                                        <div class="radio-item"><input type="radio" name="q3_1" id="q3_1_3" value="3"><label for="q3_1_3">มาก</label></div>
+                                        <div class="radio-item"><input type="radio" name="q3_1" id="q3_1_4" value="4"><label for="q3_1_4">มากที่สุด</label></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="question-cell">3.2 มีช่องทางอำนวยความสะดวกในการให้บริการ เช่น website, Facebook, LINE <span class="required">*</span></td>
+                                <td>
+                                    <div class="radio-group">
+                                        <div class="radio-item"><input type="radio" name="q3_2" id="q3_2_1" value="1" required><label for="q3_2_1">น้อยที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q3_2" id="q3_2_2" value="2"><label for="q3_2_2">น้อย</label></div>
+                                        <div class="radio-item"><input type="radio" name="q3_2" id="q3_2_3" value="3"><label for="q3_2_3">มาก</label></div>
+                                        <div class="radio-item"><input type="radio" name="q3_2" id="q3_2_4" value="4"><label for="q3_2_4">มากที่สุด</label></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="question-cell">3.3 มีช่องทางให้แสดงความคิดเห็นหรือเสนอแนะ <span class="required">*</span></td>
+                                <td>
+                                    <div class="radio-group">
+                                        <div class="radio-item"><input type="radio" name="q3_3" id="q3_3_1" value="1" required><label for="q3_3_1">น้อยที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q3_3" id="q3_3_2" value="2"><label for="q3_3_2">น้อย</label></div>
+                                        <div class="radio-item"><input type="radio" name="q3_3" id="q3_3_3" value="3"><label for="q3_3_3">มาก</label></div>
+                                        <div class="radio-item"><input type="radio" name="q3_3" id="q3_3_4" value="4"><label for="q3_3_4">มากที่สุด</label></div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Category 4: Service Quality -->
+                            <tr>
+                                <td colspan="2" style="background: #f8f9fa; font-weight: 700;">4. ความพึงพอใจด้านคุณภาพการให้บริการ</td>
+                            </tr>
+                            <tr>
+                                <td class="question-cell">4.1 เนื้อหาในการประชุมตรงตามความต้องการ ครบถ้วน และทันสมัย <span class="required">*</span></td>
+                                <td>
+                                    <div class="radio-group">
+                                        <div class="radio-item"><input type="radio" name="q4_1" id="q4_1_1" value="1" required><label for="q4_1_1">น้อยที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q4_1" id="q4_1_2" value="2"><label for="q4_1_2">น้อย</label></div>
+                                        <div class="radio-item"><input type="radio" name="q4_1" id="q4_1_3" value="3"><label for="q4_1_3">มาก</label></div>
+                                        <div class="radio-item"><input type="radio" name="q4_1" id="q4_1_4" value="4"><label for="q4_1_4">มากที่สุด</label></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="question-cell">4.2 การประชุมครั้งนี้มีประโยชน์ คุ้มค่า <span class="required">*</span></td>
+                                <td>
+                                    <div class="radio-group">
+                                        <div class="radio-item"><input type="radio" name="q4_2" id="q4_2_1" value="1" required><label for="q4_2_1">น้อยที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q4_2" id="q4_2_2" value="2"><label for="q4_2_2">น้อย</label></div>
+                                        <div class="radio-item"><input type="radio" name="q4_2" id="q4_2_3" value="3"><label for="q4_2_3">มาก</label></div>
+                                        <div class="radio-item"><input type="radio" name="q4_2" id="q4_2_4" value="4"><label for="q4_2_4">มากที่สุด</label></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="question-cell">4.3 ความพึงพอใจโดยรวมต่อคุณภาพการจัดประชุมครั้งนี้ <span class="required">*</span></td>
+                                <td>
+                                    <div class="radio-group">
+                                        <div class="radio-item"><input type="radio" name="q4_3" id="q4_3_1" value="1" required><label for="q4_3_1">น้อยที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q4_3" id="q4_3_2" value="2"><label for="q4_3_2">น้อย</label></div>
+                                        <div class="radio-item"><input type="radio" name="q4_3" id="q4_3_3" value="3"><label for="q4_3_3">มาก</label></div>
+                                        <div class="radio-item"><input type="radio" name="q4_3" id="q4_3_4" value="4"><label for="q4_3_4">มากที่สุด</label></div>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            <!-- Category 5: Speakers -->
+                            <tr>
+                                <td colspan="2" style="background: #f8f9fa; font-weight: 700;">5. ความพึงพอใจต่อวิทยากรผู้ให้ความรู้ (โดยภาพรวม)</td>
+                            </tr>
+                            <tr>
+                                <td class="question-cell">5.1 วิทยากรมีความรู้ความสามารถในเนื้อหาที่บรรยาย <span class="required">*</span></td>
+                                <td>
+                                    <div class="radio-group">
+                                        <div class="radio-item"><input type="radio" name="q5_1" id="q5_1_1" value="1" required><label for="q5_1_1">น้อยที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q5_1" id="q5_1_2" value="2"><label for="q5_1_2">น้อย</label></div>
+                                        <div class="radio-item"><input type="radio" name="q5_1" id="q5_1_3" value="3"><label for="q5_1_3">มาก</label></div>
+                                        <div class="radio-item"><input type="radio" name="q5_1" id="q5_1_4" value="4"><label for="q5_1_4">มากที่สุด</label></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="question-cell">5.2 วิทยากรบรรยายได้ครบถ้วนตามวัตถุประสงค์ <span class="required">*</span></td>
+                                <td>
+                                    <div class="radio-group">
+                                        <div class="radio-item"><input type="radio" name="q5_2" id="q5_2_1" value="1" required><label for="q5_2_1">น้อยที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q5_2" id="q5_2_2" value="2"><label for="q5_2_2">น้อย</label></div>
+                                        <div class="radio-item"><input type="radio" name="q5_2" id="q5_2_3" value="3"><label for="q5_2_3">มาก</label></div>
+                                        <div class="radio-item"><input type="radio" name="q5_2" id="q5_2_4" value="4"><label for="q5_2_4">มากที่สุด</label></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="question-cell">5.3 วิทยากรถ่ายทอดความรู้ให้เข้าใจได้ง่าย <span class="required">*</span></td>
+                                <td>
+                                    <div class="radio-group">
+                                        <div class="radio-item"><input type="radio" name="q5_3" id="q5_3_1" value="1" required><label for="q5_3_1">น้อยที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q5_3" id="q5_3_2" value="2"><label for="q5_3_2">น้อย</label></div>
+                                        <div class="radio-item"><input type="radio" name="q5_3" id="q5_3_3" value="3"><label for="q5_3_3">มาก</label></div>
+                                        <div class="radio-item"><input type="radio" name="q5_3" id="q5_3_4" value="4"><label for="q5_3_4">มากที่สุด</label></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="question-cell">5.4 วิทยากรเปิดโอกาสให้ซักถามข้อสงสัย <span class="required">*</span></td>
+                                <td>
+                                    <div class="radio-group">
+                                        <div class="radio-item"><input type="radio" name="q5_4" id="q5_4_1" value="1" required><label for="q5_4_1">น้อยที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q5_4" id="q5_4_2" value="2"><label for="q5_4_2">น้อย</label></div>
+                                        <div class="radio-item"><input type="radio" name="q5_4" id="q5_4_3" value="3"><label for="q5_4_3">มาก</label></div>
+                                        <div class="radio-item"><input type="radio" name="q5_4" id="q5_4_4" value="4"><label for="q5_4_4">มากที่สุด</label></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="question-cell">5.5 ความพึงพอใจโดยรวมเกี่ยวกับวิทยากรและทีมงาน <span class="required">*</span></td>
+                                <td>
+                                    <div class="radio-group">
+                                        <div class="radio-item"><input type="radio" name="q5_5" id="q5_5_1" value="1" required><label for="q5_5_1">น้อยที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q5_5" id="q5_5_2" value="2"><label for="q5_5_2">น้อย</label></div>
+                                        <div class="radio-item"><input type="radio" name="q5_5" id="q5_5_3" value="3"><label for="q5_5_3">มาก</label></div>
+                                        <div class="radio-item"><input type="radio" name="q5_5" id="q5_5_4" value="4"><label for="q5_5_4">มากที่สุด</label></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Score Questions (6-8) -->
+                <div style="margin: 30px 0;">
+                    <div class="form-group">
+                        <label>6. โปรดให้คะแนนความพึงพอใจในภาพรวม (1-10 คะแนน) <span class="required">*</span></label>
+                        <div class="score-group">
+                            <div class="score-item"><input type="radio" name="q6" id="q6_1" value="1" required><label for="q6_1">1</label></div>
+                            <div class="score-item"><input type="radio" name="q6" id="q6_2" value="2"><label for="q6_2">2</label></div>
+                            <div class="score-item"><input type="radio" name="q6" id="q6_3" value="3"><label for="q6_3">3</label></div>
+                            <div class="score-item"><input type="radio" name="q6" id="q6_4" value="4"><label for="q6_4">4</label></div>
+                            <div class="score-item"><input type="radio" name="q6" id="q6_5" value="5"><label for="q6_5">5</label></div>
+                            <div class="score-item"><input type="radio" name="q6" id="q6_6" value="6"><label for="q6_6">6</label></div>
+                            <div class="score-item"><input type="radio" name="q6" id="q6_7" value="7"><label for="q6_7">7</label></div>
+                            <div class="score-item"><input type="radio" name="q6" id="q6_8" value="8"><label for="q6_8">8</label></div>
+                            <div class="score-item"><input type="radio" name="q6" id="q6_9" value="9"><label for="q6_9">9</label></div>
+                            <div class="score-item"><input type="radio" name="q6" id="q6_10" value="10"><label for="q6_10">10</label></div>
+                        </div>
+                        <div class="score-legend">
+                            <span>น้อยที่สุด</span>
+                            <span>มากที่สุด</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>7. คะแนนความรู้ก่อนเข้าประชุม (1-10 คะแนน) <span class="required">*</span></label>
+                        <div class="score-group">
+                            <div class="score-item"><input type="radio" name="q7" id="q7_1" value="1" required><label for="q7_1">1</label></div>
+                            <div class="score-item"><input type="radio" name="q7" id="q7_2" value="2"><label for="q7_2">2</label></div>
+                            <div class="score-item"><input type="radio" name="q7" id="q7_3" value="3"><label for="q7_3">3</label></div>
+                            <div class="score-item"><input type="radio" name="q7" id="q7_4" value="4"><label for="q7_4">4</label></div>
+                            <div class="score-item"><input type="radio" name="q7" id="q7_5" value="5"><label for="q7_5">5</label></div>
+                            <div class="score-item"><input type="radio" name="q7" id="q7_6" value="6"><label for="q7_6">6</label></div>
+                            <div class="score-item"><input type="radio" name="q7" id="q7_7" value="7"><label for="q7_7">7</label></div>
+                            <div class="score-item"><input type="radio" name="q7" id="q7_8" value="8"><label for="q7_8">8</label></div>
+                            <div class="score-item"><input type="radio" name="q7" id="q7_9" value="9"><label for="q7_9">9</label></div>
+                            <div class="score-item"><input type="radio" name="q7" id="q7_10" value="10"><label for="q7_10">10</label></div>
+                        </div>
+                        <div class="score-legend">
+                            <span>น้อยที่สุด</span>
+                            <span>มากที่สุด</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>8. คะแนนความรู้หลังเข้าประชุม (1-10 คะแนน) <span class="required">*</span></label>
+                        <div class="score-group">
+                            <div class="score-item"><input type="radio" name="q8" id="q8_1" value="1" required><label for="q8_1">1</label></div>
+                            <div class="score-item"><input type="radio" name="q8" id="q8_2" value="2"><label for="q8_2">2</label></div>
+                            <div class="score-item"><input type="radio" name="q8" id="q8_3" value="3"><label for="q8_3">3</label></div>
+                            <div class="score-item"><input type="radio" name="q8" id="q8_4" value="4"><label for="q8_4">4</label></div>
+                            <div class="score-item"><input type="radio" name="q8" id="q8_5" value="5"><label for="q8_5">5</label></div>
+                            <div class="score-item"><input type="radio" name="q8" id="q8_6" value="6"><label for="q8_6">6</label></div>
+                            <div class="score-item"><input type="radio" name="q8" id="q8_7" value="7"><label for="q8_7">7</label></div>
+                            <div class="score-item"><input type="radio" name="q8" id="q8_8" value="8"><label for="q8_8">8</label></div>
+                            <div class="score-item"><input type="radio" name="q8" id="q8_9" value="9"><label for="q8_9">9</label></div>
+                            <div class="score-item"><input type="radio" name="q8" id="q8_10" value="10"><label for="q8_10">10</label></div>
+                        </div>
+                        <div class="score-legend">
+                            <span>น้อยที่สุด</span>
+                            <span>มากที่สุด</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Section 9: Knowledge Application (Day 2 Specific) -->
+                <div class="section-title">💡 9. การนำความรู้ไปใช้ประโยชน์ (Day 2)</div>
+                <p style="margin-bottom: 20px; color: #666;">ท่านคิดว่าท่านจะนำความรู้จากการบรรยายไปใช้ประโยชน์ระดับใด (Day 2 บรรยายวันที่ 27 พ.ย.68)</p>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="min-width: 350px;">หัวข้อบรรยาย</th>
+                                <th style="text-align: center; min-width: 500px;">ระดับการนำไปใช้ประโยชน์</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="question-cell">9.1 หัวข้อ "Aging Research Innovation" (8.30-10.00 น.) <span class="required">*</span></td>
+                                <td>
+                                    <div class="radio-group">
+                                        <div class="radio-item"><input type="radio" name="q9_1" id="q9_1_1" value="1" required><label for="q9_1_1">น้อยที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q9_1" id="q9_1_2" value="2"><label for="q9_1_2">น้อย</label></div>
+                                        <div class="radio-item"><input type="radio" name="q9_1" id="q9_1_3" value="3"><label for="q9_1_3">มาก</label></div>
+                                        <div class="radio-item"><input type="radio" name="q9_1" id="q9_1_4" value="4"><label for="q9_1_4">มากที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q9_1" id="q9_1_5" value="0"><label for="q9_1_5">ไม่ได้เข้าฟัง</label></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="question-cell">9.2 หัวข้อ "การจัดการปัญหาสุขภาพที่สำคัญในผู้สูงอายุ" (10-12.00 น.) <span class="required">*</span></td>
+                                <td>
+                                    <div class="radio-group">
+                                        <div class="radio-item"><input type="radio" name="q9_2" id="q9_2_1" value="1" required><label for="q9_2_1">น้อยที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q9_2" id="q9_2_2" value="2"><label for="q9_2_2">น้อย</label></div>
+                                        <div class="radio-item"><input type="radio" name="q9_2" id="q9_2_3" value="3"><label for="q9_2_3">มาก</label></div>
+                                        <div class="radio-item"><input type="radio" name="q9_2" id="q9_2_4" value="4"><label for="q9_2_4">มากที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q9_2" id="q9_2_5" value="0"><label for="q9_2_5">ไม่ได้เข้าฟัง</label></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="question-cell">9.3 หัวข้อ "นวัตกรรมการดูแลผู้สูงอายุที่มีภาวะสมองเสื่อม แบบ Humanitude" (13.00-14.30 น.) <span class="required">*</span></td>
+                                <td>
+                                    <div class="radio-group">
+                                        <div class="radio-item"><input type="radio" name="q9_3" id="q9_3_1" value="1" required><label for="q9_3_1">น้อยที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q9_3" id="q9_3_2" value="2"><label for="q9_3_2">น้อย</label></div>
+                                        <div class="radio-item"><input type="radio" name="q9_3" id="q9_3_3" value="3"><label for="q9_3_3">มาก</label></div>
+                                        <div class="radio-item"><input type="radio" name="q9_3" id="q9_3_4" value="4"><label for="q9_3_4">มากที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q9_3" id="q9_3_5" value="0"><label for="q9_3_5">ไม่ได้เข้าฟัง</label></div>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="question-cell">9.4 หัวข้อ "การพลัดตกหกล้มในผู้สูงอายุ กับการจัดสิ่งแวดล้อมที่เป็นมิตร" (14.30-16.00 น.) <span class="required">*</span></td>
+                                <td>
+                                    <div class="radio-group">
+                                        <div class="radio-item"><input type="radio" name="q9_4" id="q9_4_1" value="1" required><label for="q9_4_1">น้อยที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q9_4" id="q9_4_2" value="2"><label for="q9_4_2">น้อย</label></div>
+                                        <div class="radio-item"><input type="radio" name="q9_4" id="q9_4_3" value="3"><label for="q9_4_3">มาก</label></div>
+                                        <div class="radio-item"><input type="radio" name="q9_4" id="q9_4_4" value="4"><label for="q9_4_4">มากที่สุด</label></div>
+                                        <div class="radio-item"><input type="radio" name="q9_4" id="q9_4_5" value="0"><label for="q9_4_5">ไม่ได้เข้าฟัง</label></div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Suggestions -->
+                <div class="form-group" style="margin-top: 30px;">
+                    <label>10. ข้อเสนอแนะที่ต้องการให้ปรับปรุง/พัฒนา</label>
+                    <textarea name="suggestion" placeholder="กรุณาระบุข้อเสนอแนะของท่าน"></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>11. หัวข้อ/ประเด็น ที่ต้องการให้จัดประชุม/อบรม ครั้งต่อไป</label>
+                    <textarea name="future_topic" placeholder="กรุณาระบุหัวข้อที่สนใจ"></textarea>
+                </div>
+
+                <!-- Privacy Notice -->
+                <div class="instructions" style="margin-top: 30px;">
+                    <p style="text-align: center;">
+                        <strong>ขอขอบพระคุณเป็นอย่างสูง</strong><br>
+                        ความคิดเห็นและข้อมูลของท่านจะถูกเก็บรักษาข้อมูลส่วนบุคคลของท่านและจะไม่เปิดเผย<br>
+                        ตามสิทธิในฐานะเจ้าของข้อมูลส่วนบุคคล โดยยึดถือแนวทางปฏิบัติตามพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562
+                    </p>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="submit-section">
+                    <button type="submit" class="btn-submit" id="submitBtn">
+                        📨 ส่งแบบประเมิน
+                    </button>
+                    <div class="loading" id="loading">
+                        <div class="spinner"></div>
+                        <p style="margin-top: 15px; color: #666;">กำลังส่งข้อมูล...</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>วิทยาลัยพยาบาลบรมราชชนนี กรุงเทพ</strong></p>
+            <p>ห้องประชุมแคทลียา</p>
+            <p>วันที่ 26 - 28 พฤศจิกายน 2568</p>
+        </div>
+    </div>
+
+    <!-- Hidden iframe for form submission -->
+    <iframe name="hidden_iframe" id="hidden_iframe" style="display:none;" onload="handleFormResponse()"></iframe>
+
+    <script>
+        // 🔧 กรุณากรอก Google Apps Script URL
+        const SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+
+        // Load names from Google Sheets on page load
+        window.addEventListener('DOMContentLoaded', async function() {
+            try {
+                const response = await fetch(SCRIPT_URL + '?action=getNames&day=day2', {
+                    method: 'GET',
+                    mode: 'cors'
+                });
+                
+                // For CORS issues, we'll use JSONP approach
+                loadNamesFromSheet();
+            } catch (error) {
+                console.log('Loading names...');
+                loadNamesFromSheet();
+            }
+        });
+
+        // Function to load names using JSONP
+        function loadNamesFromSheet() {
+            const script = document.createElement('script');
+            script.src = SCRIPT_URL + '?action=getNames&day=day2&callback=populateNameDropdown';
+            document.body.appendChild(script);
+        }
+
+        // Callback function to populate dropdown
+        window.populateNameDropdown = function(data) {
+            const dropdown = document.getElementById('fullname');
+            dropdown.innerHTML = '<option value="">-- เลือกชื่อ-นามสกุล --</option>';
+            
+            if (data.success && data.names && data.names.length > 0) {
+                data.names.forEach(name => {
+                    if (name && name.trim() !== '') {
+                        const option = document.createElement('option');
+                        option.value = name;
+                        option.textContent = name;
+                        dropdown.appendChild(option);
+                    }
+                });
+            } else if (data.success && data.names && data.names.length === 0) {
+                dropdown.innerHTML = '<option value="">ไม่มีรายชื่อที่สามารถประเมินได้ (ทุกคนประเมินแล้ว)</option>';
+            } else {
+                dropdown.innerHTML = '<option value="">ไม่พบข้อมูล - กรุณาเพิ่มชื่อในชีต2</option>';
+            }
+        };
+
+        // Form submission handler
+        document.getElementById('surveyForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Validate form
+            if (!this.checkValidity()) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'กรุณากรอกข้อมูลให้ครบถ้วน',
+                    text: 'โปรดตรวจสอบและกรอกข้อมูลที่จำเป็นทั้งหมด',
+                    confirmButtonColor: '#667eea'
+                });
+                return;
+            }
+
+            // Show loading
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('loading').classList.add('active');
+
+            try {
+                // Prepare form data
+                const formData = new FormData(this);
+                const data = {};
+                formData.forEach((value, key) => {
+                    data[key] = value;
+                });
+
+                // Send data using fetch
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: new URLSearchParams(data)
+                });
+
+                // Since we're using no-cors, we can't read the response
+                // So we assume success after a delay
+                setTimeout(() => {
+                    document.getElementById('loading').classList.remove('active');
+                    
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'ส่งข้อมูลสำเร็จ!',
+                        html: `
+                            <p>ขอบคุณสำหรับการประเมินความพึงพอใจ</p>
+                            <p><strong>ระบบได้บันทึกข้อมูลของท่านเรียบร้อยแล้ว</strong></p>
+                            <div style="margin-top: 15px; padding: 10px; background: #fff3cd; border-radius: 5px;">
+                                <p style="margin: 0; color: #856404;">
+                                    <strong>หมายเหตุ:</strong><br>
+                                    • หากท่านเข้าประชุม <strong>1 วัน</strong> → ใบประกาศจะส่งไปยังอีเมลของท่าน<br>
+                                    • หากท่านเข้าประชุม <strong>3 วัน</strong> → ใบประกาศจะส่งเมื่อท่านประเมินครบ 3 วัน
+                                </p>
+                            </div>
+                            <p style="margin-top: 10px;">อีเมล: <strong>${data.email}</strong></p>
+                        `,
+                        confirmButtonColor: '#667eea',
+                        confirmButtonText: 'ตกลง'
+                    }).then(() => {
+                        // Reset form
+                        document.getElementById('surveyForm').reset();
+                        document.getElementById('submitBtn').disabled = false;
+                        window.scrollTo(0, 0);
+                        
+                        // Reload names to reflect updated status
+                        loadNamesFromSheet();
+                    });
+                }, 2000);
+
+            } catch (error) {
+                document.getElementById('loading').classList.remove('active');
+                document.getElementById('submitBtn').disabled = false;
+                
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาด',
+                    text: 'กรุณาลองใหม่อีกครั้ง หรือติดต่อเจ้าหน้าที่',
+                    confirmButtonColor: '#667eea'
+                });
+            }
+        });
+
+        // Handle form response (backup method)
+        function handleFormResponse() {
+            console.log('Form submitted');
+        }
+
+        // Smooth scroll for better UX
+        document.querySelectorAll('input[required]').forEach(input => {
+            input.addEventListener('invalid', function() {
+                this.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            });
+        });
+    </script>
+</body>
+</html>
