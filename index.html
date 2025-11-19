@@ -397,7 +397,7 @@
 
             <!-- Form -->
             <form id="surveyForm">
-                <input type="hidden" name="day" value="day3">
+                <input type="hidden" name="day" value="day2">
                 
                 <!-- Section 1: Personal Information -->
                 <div class="section-title">📝 ส่วนที่ 1: ข้อมูลส่วนบุคคลของผู้ตอบแบบสอบถาม</div>
@@ -413,6 +413,7 @@
                 <div class="form-group">
                     <label>2. E-mail <span class="required">*</span></label>
                     <input type="email" name="email" required placeholder="example@mail.com">
+                    <div class="example-text">E-mail นี้ สำหรับส่งใบประกาศนียบัตร โปรดตรวจสอบ E-mail ให้ถูกต้อง</div>
                 </div>
 
                 <div class="form-group">
@@ -852,8 +853,8 @@
                 </div>
 
                 <!-- Section 9: Knowledge Application (Day 2 Specific) -->
-                <div class="section-title">💡 9. การนำความรู้ไปใช้ประโยชน์ (Day 3)</div>
-                <p style="margin-bottom: 20px; color: #666;">ท่านคิดว่าท่านจะนำความรู้จากการบรรยายไปใช้ประโยชน์ระดับใด (Day 3 บรรยายวันที่ 28 พ.ย.68)</p>
+                <div class="section-title">💡 9. การนำความรู้ไปใช้ประโยชน์</div>
+                <p style="margin-bottom: 20px; color: #666;">ท่านคิดว่าท่านจะนำความรู้จากการบรรยายไปใช้ประโยชน์ระดับใด</p>
 
                 <div class="table-container">
                     <table>
@@ -877,7 +878,7 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td class="question-cell">9.2 หัวข้อ "สมรรถนะพยาบาลกับการดูแลผู้สูงอายุ" (11.00-12.00 น.) <span class="required">*</span></td>
+                                <td class="question-cell">9.2 หัวข้อ "สมรรถนะพยาบาลกับการดูแลผู้สูงอายุ" (11-12.00 น.) <span class="required">*</span></td>
                                 <td>
                                     <div class="radio-group">
                                         <div class="radio-item"><input type="radio" name="q9_2" id="q9_2_1" value="1" required><label for="q9_2_1">น้อยที่สุด</label></div>
@@ -950,7 +951,7 @@
 
     <script>
         // 🔧 กรุณากรอก Google Apps Script URL
-        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwKFLiyzb16tjbDkceXZ8GKj1sM1NM-UANuXhttGz0ld-0qtUumJYmYgZs5wudIOMMbmw/exec';
+        const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwNHomoO7bPyZNCEYNCyCyKTedcLhz4VvEpm58m9D9G3CuhpuWmjPpbCgXNLfVrIsGavQ/exec';
 
         // Load names from Google Sheets on page load
         window.addEventListener('DOMContentLoaded', async function() {
@@ -1048,6 +1049,7 @@
                                 <p style="margin: 0; color: #856404;">
                                     <strong>หมายเหตุ:</strong><br>
                                     • หากท่านเข้าประชุม <strong>1 วัน</strong> → ใบประกาศจะส่งไปยังอีเมลของท่าน<br>
+                                    • หากท่านเข้าประชุม <strong>2 วัน</strong> → ใบประกาศจะส่งเมื่อท่านประเมินครบ 2 วัน<br>
                                     • หากท่านเข้าประชุม <strong>3 วัน</strong> → ใบประกาศจะส่งเมื่อท่านประเมินครบ 3 วัน
                                 </p>
                             </div>
