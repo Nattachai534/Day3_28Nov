@@ -397,7 +397,7 @@
 
             <!-- Form -->
             <form id="surveyForm">
-                <input type="hidden" name="day" value="day2">
+                <input type="hidden" name="day" value="day3">
                 
                 <!-- Section 1: Personal Information -->
                 <div class="section-title">📝 ส่วนที่ 1: ข้อมูลส่วนบุคคลของผู้ตอบแบบสอบถาม</div>
@@ -852,9 +852,9 @@
                     </div>
                 </div>
 
-                <!-- Section 9: Knowledge Application (Day 2 Specific) -->
-                <div class="section-title">💡 9. การนำความรู้ไปใช้ประโยชน์</div>
-                <p style="margin-bottom: 20px; color: #666;">ท่านคิดว่าท่านจะนำความรู้จากการบรรยายไปใช้ประโยชน์ระดับใด</p>
+                <!-- Section 9: Knowledge Application (Day 3 Specific) -->
+                <div class="section-title">💡 9. การนำความรู้ไปใช้ประโยชน์ (Day 3)</div>
+                <p style="margin-bottom: 20px; color: #666;">ท่านคิดว่าท่านจะนำความรู้จากการบรรยายไปใช้ประโยชน์ระดับใด (Day 3 บรรยายวันที่ 28 พ.ย.68)</p>
 
                 <div class="table-container">
                     <table>
@@ -956,7 +956,7 @@
         // Load names from Google Sheets on page load
         window.addEventListener('DOMContentLoaded', async function() {
             try {
-                const response = await fetch(SCRIPT_URL + '?action=getNames&day=day2', {
+                const response = await fetch(SCRIPT_URL + '?action=getNames&day=day3', {
                     method: 'GET',
                     mode: 'cors'
                 });
@@ -972,7 +972,7 @@
         // Function to load names using JSONP
         function loadNamesFromSheet() {
             const script = document.createElement('script');
-            script.src = SCRIPT_URL + '?action=getNames&day=day2&callback=populateNameDropdown';
+            script.src = SCRIPT_URL + '?action=getNames&day=day3&callback=populateNameDropdown';
             document.body.appendChild(script);
         }
 
